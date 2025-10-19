@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Phpresilience\CiGuard\Analyzer;
+use Phpresilience\CiGuard\Reporters\DefaultReporter;
+use Phpresilience\CiGuard\Reporters\JsonReporter;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$directory = $argv[1] ?? './src';
+$format = $argv[2] ?? 'default';
+
+if (!is_dir($directory)) {
+    echo "❌ Directory not found: {$directory}\n";
+    exit(1);
+}
+
+echo "🔍 Scanning {$directory} for HTTP calls without timeout...\n\n";
+
+$analyzer = new Analyzer();
+$issues = $analyzer->analyze($directory);
+
+$reporter = match($format) {
+    'json' => new JsonReporter(),
+    default => new DefaultReporter(),
+};
+
+$reporter->report($issues);
+
+exit(\count($issues) > 0 ? 1 : 0);
