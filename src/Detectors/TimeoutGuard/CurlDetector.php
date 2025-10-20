@@ -6,10 +6,12 @@ namespace Phpresilience\CiGuard\Detectors\TimeoutGuard;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use Phpresilience\CiGuard\Detectors\DetectorInterface;
 use Phpresilience\CiGuard\Models\Issue;
 
-class CurlDetector extends NodeVisitorAbstract
+class CurlDetector extends NodeVisitorAbstract implements DetectorInterface
 {
+    /** @var array<Issue> */
     private array $issues = [];
 
     public function enterNode(Node $node)
@@ -61,6 +63,9 @@ curl_close($ch);
 PHP;
     }
 
+    /**
+     * @return array<Issue>
+     */
     public function getIssues(): array
     {
         return $this->issues;

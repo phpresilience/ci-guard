@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Phpresilience\CiGuard\Reporters;
 
+use Phpresilience\CiGuard\Models\Issue;
+
 class DefaultReporter implements ReporterInterface
 {
+    /**
+     * @param array<Issue> $issues
+     */
     public function report(array $issues): void
     {
         if (empty($issues)) {
@@ -50,6 +55,10 @@ class DefaultReporter implements ReporterInterface
         $this->printSummary($issues);
     }
 
+    /**
+     * @param array<Issue> $issues
+     * @return array<string, array<Issue>>
+     */
     private function groupByFile(array $issues): array
     {
         $grouped = [];
@@ -90,6 +99,9 @@ class DefaultReporter implements ReporterInterface
         return $indent . str_replace("\n", "\n" . $indent, $text);
     }
 
+    /**
+     * @param array<Issue> $issues
+     */
     private function printSummary(array $issues): void
     {
         $bySeverity = [];

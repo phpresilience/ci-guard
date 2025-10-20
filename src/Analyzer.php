@@ -6,12 +6,15 @@ namespace Phpresilience\CiGuard;
 
 use FilesystemIterator;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 use PhpParser\ParserFactory;
+use Phpresilience\CiGuard\Detectors\DetectorInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class Analyzer
 {
+    /** @var array<DetectorInterface&NodeVisitor> */
     private array $detectors = [];
 
     public function __construct()
@@ -19,6 +22,9 @@ class Analyzer
         $this->detectors = $this->loadDetectors();
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     public function analyze(string $directory): array
     {
         $issues = [];
@@ -51,6 +57,9 @@ class Analyzer
         return $issues;
     }
 
+    /**
+     * @return array<DetectorInterface&NodeVisitor>
+     */
     private function loadDetectors(): array
     {
         return [
@@ -60,6 +69,9 @@ class Analyzer
         ];
     }
 
+    /**
+     * @return array<string>
+     */
     private function getPhpFiles(string $directory): array
     {
         $files = [];

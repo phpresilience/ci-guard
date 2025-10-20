@@ -6,10 +6,12 @@ namespace Phpresilience\CiGuard\Detectors\TimeoutGuard;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use Phpresilience\CiGuard\Detectors\DetectorInterface;
 use Phpresilience\CiGuard\Models\Issue;
 
-class SymfonyHttpDetector extends NodeVisitorAbstract
+class SymfonyHttpDetector extends NodeVisitorAbstract implements DetectorInterface
 {
+    /** @var array<Issue> */
     private array $issues = [];
 
     public function enterNode(Node $node)
@@ -49,6 +51,9 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
         return null;
     }
 
+    /**
+     * Todo : v2 check if $client variable comes from HttpClientInterface type hinting
+     */
     private function isSymfonyHttpRequest(Node\Expr\MethodCall $node): bool
     {
         if (! $node->name instanceof Node\Identifier) {
@@ -75,10 +80,6 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
         $validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
         return in_array($httpMethod, $validMethods);
-
-        // Todo : v2 check if $client variable comes from HttpClientInterface type hinting
-
-        return false;
     }
 
     private function isHttpClientStaticCall(Node\Expr\MethodCall $node): bool
@@ -126,6 +127,9 @@ $response = $client->request('GET', $url, [
 PHP;
     }
 
+    /**
+     * @return array<Issue>
+     */
     public function getIssues(): array
     {
         return $this->issues;

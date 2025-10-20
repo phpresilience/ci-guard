@@ -6,10 +6,12 @@ namespace Phpresilience\CiGuard\Detectors\TimeoutGuard;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use Phpresilience\CiGuard\Detectors\DetectorInterface;
 use Phpresilience\CiGuard\Models\Issue;
 
-class GuzzleDetector extends NodeVisitorAbstract
+class GuzzleDetector extends NodeVisitorAbstract implements DetectorInterface
 {
+    /** @var array<Issue> */
     private array $issues = [];
 
     public function enterNode(Node $node)
@@ -47,7 +49,7 @@ class GuzzleDetector extends NodeVisitorAbstract
 
         if ($method === 'request' && $this->hasHttpMethodAsFirstArg($node)) {
             if ($this->looksLikeSymfonyClient($node->var)) {
-                return false; // C'est probablement Symfony
+                return false;
             }
         }
 
@@ -84,7 +86,7 @@ class GuzzleDetector extends NodeVisitorAbstract
         return in_array(strtoupper($firstArg->value), $httpMethods);
     }
 
-    private function looksLikeSymfonyClient($var): bool
+    private function looksLikeSymfonyClient(mixed $var): bool
     {
         if ($var instanceof Node\Expr\Variable) {
             $varName = $var->name;
@@ -123,6 +125,9 @@ $response = $client->request('GET', $url, [
 PHP;
     }
 
+    /**
+     * @return array<Issue>
+     */
     public function getIssues(): array
     {
         return $this->issues;

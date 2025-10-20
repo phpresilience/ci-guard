@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Phpresilience\CiGuard\Reporters;
 
+use Phpresilience\CiGuard\Models\Issue;
+
 class JsonReporter implements ReporterInterface
 {
+    /**
+     * @param array<Issue> $issues
+     */
     public function report(array $issues): void
     {
         $output = [
@@ -28,6 +33,10 @@ class JsonReporter implements ReporterInterface
         echo \json_encode($output, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
+    /**
+     * @param array<Issue> $issues
+     * @return array<string, int>
+     */
     private function countBySeverity(array $issues): array
     {
         $counts = [];

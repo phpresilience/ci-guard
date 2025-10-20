@@ -8,6 +8,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Phpresilience\CiGuard\Detectors\TimeoutGuard\GuzzleDetector;
+use Phpresilience\CiGuard\Models\Issue;
 use PHPUnit\Framework\TestCase;
 
 class GuzzleDetectorTest extends TestCase
@@ -156,6 +157,9 @@ class GuzzleDetectorTest extends TestCase
         $this->assertCount(0, $issues);
     }
 
+    /**
+     * @return array<Issue>
+     */
     private function analyzeCode(string $code): array
     {
         $ast = $this->parser->parse($code);

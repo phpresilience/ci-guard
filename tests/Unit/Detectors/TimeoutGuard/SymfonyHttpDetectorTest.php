@@ -8,6 +8,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Phpresilience\CiGuard\Detectors\TimeoutGuard\SymfonyHttpDetector;
+use Phpresilience\CiGuard\Models\Issue;
 use PHPUnit\Framework\TestCase;
 
 class SymfonyHttpDetectorTest extends TestCase
@@ -106,6 +107,9 @@ class SymfonyHttpDetectorTest extends TestCase
         $this->assertCount(4, $issues);
     }
 
+    /**
+     * @return array<Issue>
+     */
     private function analyzeCode(string $code): array
     {
         $ast = $this->parser->parse($code);
