@@ -10,6 +10,7 @@ class DefaultReporter implements ReporterInterface
     {
         if (empty($issues)) {
             echo "✅ No issues found! All HTTP calls have timeout configuration.\n";
+
             return;
         }
 
@@ -30,12 +31,12 @@ class DefaultReporter implements ReporterInterface
                     $issue->line,
                     $issue->message,
                     $issue->library,
-                    $issue->method
+                    $issue->method,
                 );
 
                 $suggestionKey = $issue->library . '::' . $issue->type;
 
-                if ($issue->suggestion && !isset($displayedSuggestions[$suggestionKey])) {
+                if ($issue->suggestion && ! isset($displayedSuggestions[$suggestionKey])) {
                     echo "\n" . $this->indent($issue->suggestion, 4) . "\n";
                     $displayedSuggestions[$suggestionKey] = true;
                 }
@@ -85,6 +86,7 @@ class DefaultReporter implements ReporterInterface
     private function indent(string $text, int $spaces): string
     {
         $indent = str_repeat(' ', $spaces);
+
         return $indent . str_replace("\n", "\n" . $indent, $text);
     }
 

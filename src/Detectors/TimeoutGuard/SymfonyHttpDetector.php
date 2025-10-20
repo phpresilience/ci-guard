@@ -14,10 +14,9 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
 
     public function enterNode(Node $node)
     {
-        // Détecte : $client->request(...)
         if ($node instanceof Node\Expr\MethodCall) {
             if ($this->isSymfonyHttpRequest($node)) {
-                if (!$this->hasTimeout($node)) {
+                if (! $this->hasTimeout($node)) {
                     $this->issues[] = new Issue(
                         line: $node->getLine(),
                         type: 'missing_timeout',
@@ -33,7 +32,7 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
 
         if ($node instanceof Node\Expr\MethodCall) {
             if ($this->isHttpClientStaticCall($node)) {
-                if (!$this->hasTimeout($node)) {
+                if (! $this->hasTimeout($node)) {
                     $this->issues[] = new Issue(
                         line: $node->getLine(),
                         type: 'missing_timeout',
@@ -52,7 +51,7 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
 
     private function isSymfonyHttpRequest(Node\Expr\MethodCall $node): bool
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (! $node->name instanceof Node\Identifier) {
             return false;
         }
 
@@ -68,7 +67,7 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
 
         $firstArg = $node->args[0]->value;
 
-        if (!$firstArg instanceof Node\Scalar\String_) {
+        if (! $firstArg instanceof Node\Scalar\String_) {
             return false;
         }
 
@@ -84,14 +83,12 @@ class SymfonyHttpDetector extends NodeVisitorAbstract
 
     private function isHttpClientStaticCall(Node\Expr\MethodCall $node): bool
     {
-        // Détecte : HttpClient::create()->request(...)
         if ($node->var instanceof Node\Expr\StaticCall) {
             $staticCall = $node->var;
 
             if ($staticCall->class instanceof Node\Name) {
                 $className = $staticCall->class->toString();
 
-                // Vérifie si c'est HttpClient
                 if (str_contains($className, 'HttpClient')) {
                     return $node->name instanceof Node\Identifier
                         && $node->name->toString() === 'request';

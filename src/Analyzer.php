@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Phpresilience\CiGuard;
 
 use FilesystemIterator;
-use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
+use PhpParser\ParserFactory;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -64,7 +64,7 @@ class Analyzer
     {
         $files = [];
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
         );
 
         foreach ($iterator as $file) {

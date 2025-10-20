@@ -16,7 +16,7 @@ class CurlDetector extends NodeVisitorAbstract
     {
         if ($node instanceof Node\Expr\FuncCall) {
             if ($this->isCurlExec($node)) {
-                if (!$this->hasTimeoutInScope($node)) {
+                if (! $this->hasTimeoutInScope($node)) {
                     $this->issues[] = new Issue(
                         line: $node->getLine(),
                         type: 'missing_timeout',
@@ -38,6 +38,7 @@ class CurlDetector extends NodeVisitorAbstract
         if ($node->name instanceof Node\Name) {
             return $node->name->toString() === 'curl_exec';
         }
+
         return false;
     }
 

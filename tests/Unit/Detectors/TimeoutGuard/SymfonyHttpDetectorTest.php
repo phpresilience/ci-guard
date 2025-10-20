@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 class SymfonyHttpDetectorTest extends TestCase
 {
     private SymfonyHttpDetector $detector;
+
     private Parser $parser;
 
     protected function setUp(): void

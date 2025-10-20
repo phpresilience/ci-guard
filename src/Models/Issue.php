@@ -15,5 +15,6 @@ class Issue
         public string $message,
         public string $suggestion,
         public ?string $file = null,
-    ) {}
+    ) {
+    }
 }

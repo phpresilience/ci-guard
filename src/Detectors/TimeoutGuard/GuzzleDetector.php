@@ -16,7 +16,7 @@ class GuzzleDetector extends NodeVisitorAbstract
     {
         if ($node instanceof Node\Expr\MethodCall) {
             if ($this->isGuzzleRequest($node)) {
-                if (!$this->hasTimeout($node)) {
+                if (! $this->hasTimeout($node)) {
                     $this->issues[] = new Issue(
                         line: $node->getLine(),
                         type: 'missing_timeout',
@@ -35,13 +35,13 @@ class GuzzleDetector extends NodeVisitorAbstract
 
     private function isGuzzleRequest(Node\Expr\MethodCall $node): bool
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (! $node->name instanceof Node\Identifier) {
             return false;
         }
 
         $method = $node->name->toString();
 
-        if (!in_array($method, ['request', 'get', 'post', 'put', 'delete', 'patch', 'head', 'options'])) {
+        if (! in_array($method, ['request', 'get', 'post', 'put', 'delete', 'patch', 'head', 'options'])) {
             return false;
         }
 
@@ -56,7 +56,7 @@ class GuzzleDetector extends NodeVisitorAbstract
 
             $httpClientNames = [
                 'client', 'httpClient', 'guzzle', 'guzzleClient',
-                'http', 'api', 'apiClient', 'restClient'
+                'http', 'api', 'apiClient', 'restClient',
             ];
 
             if (in_array($varName, $httpClientNames)) {
@@ -75,11 +75,12 @@ class GuzzleDetector extends NodeVisitorAbstract
 
         $firstArg = $node->args[0]->value;
 
-        if (!$firstArg instanceof Node\Scalar\String_) {
+        if (! $firstArg instanceof Node\Scalar\String_) {
             return false;
         }
 
         $httpMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
+
         return in_array(strtoupper($firstArg->value), $httpMethods);
     }
 
@@ -87,6 +88,7 @@ class GuzzleDetector extends NodeVisitorAbstract
     {
         if ($var instanceof Node\Expr\Variable) {
             $varName = $var->name;
+
             return in_array($varName, ['symfonyClient', 'httpClient']);
         }
 

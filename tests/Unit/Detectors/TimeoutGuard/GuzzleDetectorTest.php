@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 class GuzzleDetectorTest extends TestCase
 {
     private GuzzleDetector $detector;
+
     private Parser $parser;
 
     protected function setUp(): void

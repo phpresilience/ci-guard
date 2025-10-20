@@ -10,10 +10,10 @@ class JsonReporter implements ReporterInterface
     {
         $output = [
             'summary' => [
-                'total' => count($issues),
+                'total' => \count($issues),
                 'by_severity' => $this->countBySeverity($issues),
             ],
-            'issues' => array_map(fn($issue) => [
+            'issues' => array_map(fn ($issue) => [
                 'file' => $issue->file,
                 'line' => $issue->line,
                 'type' => $issue->type,
@@ -34,6 +34,7 @@ class JsonReporter implements ReporterInterface
         foreach ($issues as $issue) {
             $counts[$issue->severity] = ($counts[$issue->severity] ?? 0) + 1;
         }
+
         return $counts;
     }
 }
