@@ -1,5 +1,10 @@
 # CI-Guard
 
+[![Quality Gates](https://github.com/phpresilience/ci-guard/workflows/Quality%20Gates/badge.svg)](https://github.com/phpresilience/ci-guard/actions/workflows/quality-gates.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/phpresilience/ci-guard/quality-gates.yml?label=tests)](https://github.com/phpresilience/ci-guard/actions)
+[![codecov](https://codecov.io/gh/phpresilience/ci-guard/branch/main/graph/badge.svg)](https://codecov.io/gh/phpresilience/ci-guard)
+[![Latest Version](https://img.shields.io/packagist/v/phpresilience/ci-guard)](https://packagist.org/packages/phpresilience/ci-guard)
+
 > **Prevent production incidents before they happen**  
 > Static analysis and resilience checks for PHP applications
 
@@ -71,7 +76,7 @@ CI-Guard is evolving into a comprehensive resilience analysis platform:
 - [x] Symfony HttpClient detection
 - [x] CLI reporter
 - [ ] cURL detection
-- [ ] JSON reporter
+- [x] JSON reporter
 - [ ] Configurable rules
 
 ### 🔄 Phase 2: CircuitBreakerGuard (Q2 2025)
